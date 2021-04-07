@@ -898,6 +898,56 @@ OMXControlResult OMXControl::handle_event(DBusMessage *m)
       return OMXControlResult(KeyConfig::ACTION_SET_LAYER, layer);
     }
   }
+  else if (dbus_message_is_method_call(m, OMXPLAYER_DBUS_INTERFACE_PLAYER, "SetTransform")) {
+    DBusError error;
+    dbus_error_init(&error);
+
+    int64_t rotation;
+    dbus_message_get_args(m, &error, DBUS_TYPE_INT64, &rotation, DBUS_TYPE_INVALID);
+
+    if (dbus_error_is_set(&error))
+    {
+      CLog::Log(LOGWARNING, "SetLayer D-Bus Error: %s", error.message);
+      dbus_error_free(&error);
+      dbus_respond_ok(m);
+      return KeyConfig::ACTION_BLANK;
+    }
+
+    OMX_DISPLAYTRANSFORMTYPE transform;
+    switch (rotation) {
+      case 0:
+        transform = OMX_DISPLAY_ROT0;
+        break;
+      case 1:
+        transform = OMX_DISPLAY_MIRROR_ROT0;
+        break;
+      case 90:
+        transform = OMX_DISPLAY_ROT90;
+        break;
+      case 91:
+        transform = OMX_DISPLAY_MIRROR_ROT90;
+        break;
+      case 180:
+        transform = OMX_DISPLAY_ROT180;
+        break;
+      case 181:
+        transform = OMX_DISPLAY_MIRROR_ROT180;
+        break;
+      case 270:
+        transform = OMX_DISPLAY_ROT270;
+        break;
+      case 271:
+        transform = OMX_DISPLAY_MIRROR_ROT270;
+        break;
+      default:
+        CLog::Log(LOGWARNING, "Invalid value for SetTransform: %" PRIi64 "\n", rotation);
+        dbus_respond_ok(m);
+        return KeyConfig::ACTION_BLANK;
+    }
+
+    dbus_respond_int64(m, rotation);
+    return OMXControlResult(KeyConfig::ACTION_SET_TRANSFORM, transform);
+  }
   else if (dbus_message_is_method_call(m, OMXPLAYER_DBUS_INTERFACE_PLAYER, "SetAspectMode"))
   {
     DBusError error;

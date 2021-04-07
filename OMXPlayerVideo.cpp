@@ -184,6 +184,10 @@ void OMXPlayerVideo::SetLayer(int layer)
   m_decoder->SetLayer(layer);
 }
 
+void OMXPlayerVideo::SetTransform(OMX_DISPLAYTRANSFORMTYPE transform) {
+  m_decoder->SetTransform(transform); 
+}
+
 void OMXPlayerVideo::SetVideoRect(const CRect& SrcRect, const CRect& DestRect)
 {
   m_decoder->SetVideoRect(SrcRect, DestRect);

@@ -927,6 +927,26 @@ void COMXVideo::SetAlpha(int alpha)
 
 }
 
+void COMXVideo::SetTransform(OMX_DISPLAYTRANSFORMTYPE transform)
+{
+  CSingleLock lock (m_critSection);
+  if (!m_is_open)
+    return;
+  
+  OMX_ERRORTYPE omx_err;
+  OMX_CONFIG_DISPLAYREGIONTYPE configDisplay;
+  OMX_INIT_STRUCTURE(configDisplay);
+
+  configDisplay.nPortIndex = m_omx_render.GetInputPort();
+  configDisplay.set = OMX_DISPLAY_SET_TRANSFORM;
+  configDisplay.transform = (OMX_DISPLAYTRANSFORMTYPE) transform;
+
+  omx_err = m_omx_render.SetConfig(OMX_IndexConfigDisplayRegion, &configDisplay);
+  if (omx_err != OMX_ErrorNone) {
+    CLog::Log(LOGERROR, "COMXVideo::SetOrientation error: COMXCoreComponent::SetConfig failed with OMX error 0x%08x\n", omx_err);
+  }
+}
+
 int COMXVideo::GetInputBufferSize()
 {
   CSingleLock lock (m_critSection);

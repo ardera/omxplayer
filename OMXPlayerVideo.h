@@ -98,6 +98,7 @@ public:
   double GetDelay() { return m_iVideoDelay; }
   void SetAlpha(int alpha);
   void SetLayer(int layer);
+  void SetTransform(OMX_DISPLAYTRANSFORMTYPE transform);
   void SetVideoRect(const CRect& SrcRect, const CRect& DestRect);
   void SetVideoRect(int aspectMode);
 

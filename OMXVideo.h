@@ -110,6 +110,7 @@ public:
   void SetVideoRect();
   void SetAlpha(int alpha);
   void SetLayer(int layer);
+  void SetTransform(OMX_DISPLAYTRANSFORMTYPE transform);
   int GetInputBufferSize();
   void SubmitEOS();
   bool IsEOS();

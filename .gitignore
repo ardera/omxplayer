@@ -7,3 +7,7 @@ ffmpeg
 help.h
 keys.h
 patch.flag
+.vscode
+MAN
+omxplayer.1
+omxplayer-dist.tgz
